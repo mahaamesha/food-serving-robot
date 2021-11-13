@@ -1,49 +1,108 @@
 #include "Robot.h"
 
-const byte lineL = 12;  //sensor garis kiri
-const byte lineR = 11;  //sensor garis kanan
+const byte lineL = A0;  //sensor garis kiri
+const byte lineR = A1;  //sensor garis kanan, bebas pin analog/digital
 
-Robot bot(3,2,4,5,6,7);    // objek bot(ENA, IN1, IN2, ENB, IN3, IN4)
-void ikutLine();
+const byte btnSubmit = 12;
+const byte btnReset = 11;
+const byte indikatorLED = 10;
+bool goFlag = 0;
+
+char riwayatAksi[10];
+
+Robot bot(3,2,4,5,6,7);    //objek bot(ENA, IN1, IN2, ENB, IN3, IN4)
+void tukarChar(char arr[], char panjang);
+void ikutLine(char aksi[]);
 
 void setup() {
   Serial.begin(9600);
   
   pinMode(lineL, INPUT);
   pinMode(lineR, INPUT);
+
+  pinMode(btnSubmit, INPUT);
+  pinMode(indikatorLED, OUTPUT);
   
-  bot.aturSpeed(60);  // speed X %
+  bot.aturSpeed(60);  //speed X %
 }
 
 void loop() {
-  ikutLine();
+
+  //nanti setelah robot sampai tujuan, sudah dibuat goFlag=0
+  //button SUBMIT ditekan, ubah goFlag=1
+  bool btnSubmitState = digitalRead(btnSubmit);
+  if(btnSubmitState == 0){
+    digitalWrite(indikatorLED, !goFlag);
+    goFlag = !goFlag;
+  }
+  //Serial.print("btnSubmitState: "); Serial.println(btnSubmitState);
+
+  //hapus meja tujuan, kalau salah input
+  bool btnResetState = digitalRead(btnReset);
+  if(btnResetState == 0){
+    //mejaTujuan[jumlahMeja] = {0,0,0,...}
+  }
+
+  //setelah True, jalan ikuti line. goFlag diatur btnSubmit
+  if(goFlag == 1){
+    ikutLine(riwayatAksi);
+    for(int i=0;i<10;i++){
+      Serial.print(riwayatAksi[i]); Serial.print(" ");
+    }
+    
+    bool sampaiFlag = sampaiCek(riwayatAksi,10);
+    if( sampaiFlag != 0){
+      goFlag = 0; //jika berhenti lama, maka sampai tujuan
+    }
+  }
+  Serial.print("goFlag: "); Serial.println(goFlag);
+  Serial.println(); delay(300);
 }
 
-void ikutLine(){
-  byte valLineL = digitalRead(lineL); // 0 -> putih
-  byte valLineR = digitalRead(lineR); // 1 -> hitam
+void tukarChar(char arr[], char panjang){ //1,2,3,4 -> 4,1,2,3
+  char temp;
+  panjang -= 1;
+  for(int i=0; i<panjang; i++){
+    temp = arr[panjang-i];
+    arr[panjang-i] = arr[panjang-1-i];
+    arr[panjang-1-i] = temp;
+  }
+}
 
-  Serial.print("L: ");
+void ikutLine(char aksi[]){
+  //setiap gerakan disimpan di char aksi
+  bool valLineL = digitalRead(lineL); // 0 -> putih
+  bool valLineR = digitalRead(lineR); // 1 -> hitam
+
+  /*Serial.print("lineL: ");
   Serial.println(valLineL);
-  Serial.print("R: ");
-  Serial.println(valLineR);
+  Serial.print("lineR: ");
+  Serial.println(valLineR);*/
+
+  tukarChar(aksi, 10);  //1,2,3,4 -> 4,1,2,3
   
   if (valLineL + valLineR == 0){
-    Serial.println("MAJU");
+    aksi[0] = 'F';
     bot.maju(2);
   }
   else if(valLineL + valLineR == 2){
-    Serial.println("STOP");
+    aksi[0] = 'S';
     bot.stop(2);
   }
   else if(valLineL == 1 && valLineR == 0){
-    Serial.println("BELOK KIRI");
+    aksi[0] = 'L';
     bot.belokKiri(2);
   }
   else if(valLineL == 0 && valLineR == 1){
-    Serial.println("BELOK KANAN");
+    aksi[0] = 'R';
     bot.belokKanan(2);
   }
-  
-  Serial.println(); delay(1000);
+  //Serial.println(aksi[0]);
+}
+
+bool sampaiCek(char arr[], byte panjang){
+  for(int i=0; i<panjang; i++){
+    if(arr[i] != 'S') return 0;
+  }
+  return 1; //semua 'S' -> sudah sampai tujuan
 }
