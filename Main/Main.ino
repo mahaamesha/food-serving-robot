@@ -8,11 +8,15 @@ const byte btnReset = 11;
 const byte indikatorLED = 10;
 bool goFlag = 0;
 
+bool rute[3];  //{berangkat, meja1, kembali}
 char riwayatAksi[10];
 
 Robot bot(3,2,4,5,6,7);    //objek bot(ENA, IN1, IN2, ENB, IN3, IN4)
+
 void tukarChar(char arr[], char panjang);
 void ikutLine(char aksi[]);
+bool sampaiCek(char arr[], byte panjang);
+void resetArray(char arr[], byte panjang);
 
 void setup() {
   Serial.begin(9600);
@@ -51,8 +55,10 @@ void loop() {
     }
     
     bool sampaiFlag = sampaiCek(riwayatAksi,10);
-    if( sampaiFlag != 0){
+    if(sampaiFlag == 1){
+      digitalWrite(indikatorLED, LOW);
       goFlag = 0; //jika berhenti lama, maka sampai tujuan
+      resetArray(riwayatAksi, 10);
     }
   }
   Serial.print("goFlag: "); Serial.println(goFlag);
@@ -105,4 +111,10 @@ bool sampaiCek(char arr[], byte panjang){
     if(arr[i] != 'S') return 0;
   }
   return 1; //semua 'S' -> sudah sampai tujuan
+}
+
+void resetArray(char arr[], byte panjang){
+  for(int i=0; i<panjang; i++){
+    arr[i] = "";
+  }
 }
