@@ -1,0 +1,33 @@
+Pin Connection Information
+
+RAW     7-12V
+
+L298N   Arduino
+ENA     3
+IN1     2
+IN2     4
+ENB     5
+IN3     6
+IN4     7
+
+LCD 16x2 
+SDA     A4
+SCL     A5
+
+TCRT5000
+D0      A0  paling kiri
+D0      A1  kiri
+D0      A2  kanan
+D0      A3  paling kanan
+
+BUTTON & INDIKATOR
+LED     13
+SUBMIT  12
+RESET   11
+
+OTHERS
+        8
+        9
+        10
+        A6
+        A7

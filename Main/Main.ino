@@ -5,7 +5,7 @@ const byte lineR = A1;  //sensor garis kanan, bebas pin analog/digital
 
 const byte btnSubmit = 12;
 const byte btnReset = 11;
-const byte indikatorLED = 10;
+const byte indikatorLED = 13;
 bool goFlag = 0;
 
 bool rute[3];  //{berangkat, meja1, kembali}
