@@ -1,0 +1,18 @@
+Robot standby di base
+
+Koki taruh makanan
+Koki tekan meja tujuan
+Koki tekan SUBMIT
+
+Robot jalan ikuti garis
+Robot sampai di meja tujuan
+
+Pelanggan ambil makanan
+Pelanggan tekan SUBMIT
+
+Robot putar balik
+Robot jalan ikuti garis
+Robot sampai di base
+Robot putar balik
+
+DONE

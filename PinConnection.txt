@@ -24,10 +24,10 @@ BUTTON & INDIKATOR
 LED     13
 SUBMIT  12
 RESET   11
+NUMBER  10
 
 OTHERS
         8
         9
-        10
         A6
         A7
