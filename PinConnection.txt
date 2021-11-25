@@ -3,11 +3,11 @@ Pin Connection Information
 RAW     7-12V
 
 L298N   Arduino
-ENA     3
+ENA     3  pwm
 IN1     2
 IN2     4
-ENB     5
-IN3     6
+ENB     5  pwm
+IN3     6  pwm
 IN4     7
 
 LCD 16x2 

@@ -45,9 +45,9 @@ void Robot::mundur(unsigned long lama){
   analogWrite(pinENA, nilaiAnalog);
   analogWrite(pinENB, nilaiAnalog);
   digitalWrite(pinIN1, LOW);
-  analogWrite(pinIN2, HIGH);
+  digitalWrite(pinIN2, HIGH);
   digitalWrite(pinIN3, LOW);
-  analogWrite(pinIN4, HIGH);
+  digitalWrite(pinIN4, HIGH);
   delay(lama);
   stop(0);
 }
@@ -62,11 +62,11 @@ void Robot::stop(unsigned long lama){
   delay(lama);
 }
 
-void Robot::belokKanan(unsigned long lama){
+void Robot::belokKiri(unsigned long lama){
   byte nilaiAnalog = laju / 100.0 * 255;
   analogWrite(pinENA, nilaiAnalog);
   analogWrite(pinENB, 0);
-  analogWrite(pinIN1, HIGH);
+  digitalWrite(pinIN1, HIGH); //roda kanan
   digitalWrite(pinIN2, LOW);
   digitalWrite(pinIN3, LOW);
   digitalWrite(pinIN4, LOW);
@@ -74,19 +74,19 @@ void Robot::belokKanan(unsigned long lama){
   stop(0);
 }
 
-void Robot::belokKiri(unsigned long lama){
+void Robot::belokKanan(unsigned long lama){
   byte nilaiAnalog = laju / 100.0 * 255;
   analogWrite(pinENA, 0);
   analogWrite(pinENB, nilaiAnalog);
   digitalWrite(pinIN1, LOW);
   digitalWrite(pinIN2, LOW);
-  digitalWrite(pinIN3, HIGH);
+  digitalWrite(pinIN3, HIGH); //roda kiri
   digitalWrite(pinIN4, LOW);
   delay(lama);
   stop(0);
 }
 
-void Robot::putarKanan(unsigned long lama){
+void Robot::putarKiri(unsigned long lama){
   byte nilaiAnalog = laju / 100.0 * 255;
   analogWrite(pinENA, nilaiAnalog);
   analogWrite(pinENB, nilaiAnalog);
@@ -98,7 +98,7 @@ void Robot::putarKanan(unsigned long lama){
   stop(0);
 }
 
-void Robot::putarKiri(unsigned long lama){
+void Robot::putarKanan(unsigned long lama){
   byte nilaiAnalog = laju / 100.0 * 255;
   analogWrite(pinENA, nilaiAnalog);
   analogWrite(pinENB, nilaiAnalog);
