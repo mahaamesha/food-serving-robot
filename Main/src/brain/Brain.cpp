@@ -47,10 +47,7 @@ void Brain::starterGo(structBrain *brainState){
     Serial.print("Starter... ");
     (*brainState).riwayatAksi[0] = '*';
     
-    byte lajuStarter = _motor -> ambilSpeed();
-    _motor -> aturSpeed(lajuStarter*2/3);
     while(digitalRead(lineL) + digitalRead(lineR) == 2) _motor -> maju(2);
-    _motor -> aturSpeed(lajuStarter);
     
     (*brainState).baseFlag = 0; //terminator
     Serial.println("Done");
@@ -58,7 +55,7 @@ void Brain::starterGo(structBrain *brainState){
 }
 
 void Brain::ikutLine(structBrain *brainState){ //setiap gerakan disimpan di char aksi
-  unsigned long lama = 10; //hold setiap aksi selama X ms
+  unsigned long lama = 15; //hold setiap aksi selama X ms
   bool valLineL = digitalRead(lineL); // 0 -> putih
   bool valLineR = digitalRead(lineR); // 1 -> hitam
 
@@ -87,7 +84,7 @@ void Brain::ikutLine(structBrain *brainState){ //setiap gerakan disimpan di char
     }
     else{
       (*brainState).riwayatAksi[0] = 'S';
-      _motor -> stop(lama);
+      _motor -> stop(lama*4/3);
     }
   }
   else if(valLineL == 1 && valLineR == 0){
@@ -146,7 +143,8 @@ void Brain::isPertigaanKiri(byte *num, structBrain *brainState){
     _motor -> aturSpeed(laju*2/3);
     while(digitalRead(lineLL) == 1) _motor -> maju(2);  //1: hitam
     while(digitalRead(lineLL) == 0) _motor -> belokKiri(2);
-    while(digitalRead(lineLL) == 1 || digitalRead(lineR) == 0) _motor -> belokKiri(2);
+    while(digitalRead(lineLL) == 1) _motor -> belokKiri(2);
+    while(digitalRead(lineR) == 0) _motor -> belokKiri(2);
     _motor -> aturSpeed(laju);
     
     if((*brainState).backFlag == 0) *num = 254;  //terminasi saat menuju tujuan
@@ -215,11 +213,10 @@ void Brain::putarBalik(){
   byte laju = _motor -> ambilSpeed();
   _motor -> aturSpeed(laju*2/3);
   
-  //selama lineL masih di hitam
-  while(digitalRead(lineL) == 1) _motor -> putarKanan(2);
-  //selama lineL belum ketemu hitam
-  while(digitalRead(lineL) != 1) _motor -> putarKanan(2);
-  
+  while(digitalRead(lineR) == 1) _motor->putarKanan(2); //1: hitam
+  while(digitalRead(lineR) == 0) _motor->putarKanan(2);
+  while(digitalRead(lineR) == 1) _motor->putarKanan(2);
+
   _motor -> aturSpeed(laju);
   Serial.println("Done");
 }
