@@ -1,7 +1,7 @@
 #include "src/motor/Motor.h"  //L298N
 #include "src/display/Display.h"//LCD_I2C & HCSR04
-#include "src/interface/Interface.h"
-#include "src/brain/Brain.h"  //Line, interface, brain
+#include "src/interface/Interface.h"  //Indikator & button
+#include "src/brain/Brain.h"  //Line, brain
 
 Interface iface(13,12,11,10); //(led, submit, reset, num)
 
@@ -15,7 +15,7 @@ void setup() {
   
   mylcd.displayInit();
   
-  motor.aturSpeed(10);  //default speed 50%
+  motor.aturSpeed(30);  //default speed 50%
 }
 //(END) SETUP
 
@@ -32,14 +32,19 @@ void loop() {
   /*STEP2 - menuju tujuan*/
   Serial.println("\n\n====== STEP 2 ======");
   mylcd.textServing(brainState.tujuan);
+  byte isTujuan = 0;  //untuk cek pertigaan -| yg benar bukan
   while(brainState.goFlag == 1){
     if(brainState.tujuan != 0){
       brain.starterGo(&brainState); //while baseFlag=1
+
+      brain.keepForward(brainState.backFlag); //terobos obstacle pertigaan |-
+
+      brain.isPertigaanKiri(&isTujuan, &brainState);  //belok kiri jika nomor meja benar
+
       brain.ikutLine(&brainState);
-      for(int i=0;i<10;i++){Serial.print(brainState.riwayatAksi[i]); Serial.print(" ");}
     }
     brain.cekSampai(&brainState);  //terminasi
-  }//goFlag=0
+  }//goFlag=0, isTujuan=254
 
   /*STEP3 - notif ambil makanan*/
   Serial.println("\n\n====== STEP 3 ======");
@@ -53,7 +58,7 @@ void loop() {
     while(brainState.inputFlag == 1){
       iface.inputDiTujuan(&brainState);
     }//goFlag=1, inputFlag=0, backFlag=1
-  }
+  }//tujuan=255, isTujuan=254
 
   /*STEP4 - putar balik, jalan ke base*/
   Serial.println("\n\n====== STEP 4 ======");
@@ -63,9 +68,17 @@ void loop() {
 
     mylcd.textKembali();
     while(brainState.backFlag == 1){
-      brain.ikutLine(&brainState);
-      for(int i=0;i<10;i++){Serial.print(brainState.riwayatAksi[i]); Serial.print(" ");}
+      //saat isTujuan=tujuan=255, di pertigaan -|, masuk ke jalur utama
+      brain.isPertigaanKiri(&isTujuan, &brainState);
+      //isTujuan=0, tujuan=255
+      
+      brain.turnRightLeft();  //saat di obstacle jalur L kanan, dan T kiri di akhir
 
+      brain.keepForward(brainState.backFlag);
+
+      brain.ikutLine(&brainState);
+
+      //cekSampai() bekerja untuk monitoring ikutLine() saja
       brain.cekSampai(&brainState);  //terminasi
     }//goFlag=0, backFlag=0
     
@@ -81,7 +94,6 @@ void loop() {
     Serial.println("PARKING");
     while(brainState.parkingFlag == 1){
       brain.ikutLine(&brainState);
-      for(int i=0;i<10;i++){Serial.print(brainState.riwayatAksi[i]); Serial.print(" ");}
 
       brain.cekSampai(&brainState);  //terminasi
     }//goFlag=0, parkingFlag=0

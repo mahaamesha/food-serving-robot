@@ -43,7 +43,8 @@ void Brain::tukarChar(char arr[]){ //1,2,3,4 -> 4,1,2,3
 }
 
 void Brain::starterGo(structBrain *brainState){
-  if((*brainState).baseFlag == 1) {  //starter, keluar dari garis stop
+  while((*brainState).baseFlag == 1) {  //starter, keluar dari garis stop
+    Serial.print("Starter... ");
     (*brainState).riwayatAksi[0] = '*';
     
     byte lajuStarter = _motor -> ambilSpeed();
@@ -52,6 +53,7 @@ void Brain::starterGo(structBrain *brainState){
     _motor -> aturSpeed(lajuStarter);
     
     (*brainState).baseFlag = 0; //terminator
+    Serial.println("Done");
   }
 }
 
@@ -96,6 +98,87 @@ void Brain::ikutLine(structBrain *brainState){ //setiap gerakan disimpan di char
     (*brainState).riwayatAksi[0] = 'R';
     _motor -> putarKanan(lama);
   }
+
+  Serial.print("Riwayat aksi... ");
+  for(int i=0;i<10;i++){Serial.print((*brainState).riwayatAksi[i]); Serial.print(" ");}
+  Serial.println();
+}
+
+void Brain::keepForward(bool backFlag){
+  //terobos pertigaan |- saat menuju tujuan
+  if(digitalRead(lineRR) == 1 && backFlag == 0){ //hitam
+    Serial.print("Lurus terus menuju tujuan... ");
+    byte laju = _motor -> ambilSpeed();
+    _motor -> aturSpeed(laju*2/3);
+
+    while(digitalRead(lineRR) == 1){
+      _motor -> maju(2);
+      while(digitalRead(lineL) == 1) _motor -> putarKiri(2);
+    }
+
+    _motor -> aturSpeed(laju);
+    Serial.println("Done");
+  }//sudah keluar dari obstacle pertigaan |- saat menuju tujuan
+  
+  //terobos pertigaan -| saat menuju base
+  else if(digitalRead(lineLL) == 1 && backFlag == 1){
+    Serial.print("Lurus terus menuju base... ");
+    byte laju = _motor -> ambilSpeed();
+    _motor -> aturSpeed(laju*2/3);
+
+    while(digitalRead(lineLL) == 1){
+      _motor -> maju(2);
+      while(digitalRead(lineR) == 1) _motor -> putarKanan(2);
+    }
+
+    _motor -> aturSpeed(laju);
+    Serial.println("Done");
+  }//sudah keluar dari obstacle pertigaan -| saat menuju base
+}
+
+void Brain::isPertigaanKiri(byte *num, structBrain *brainState){
+  if(digitalRead(lineLL) == 1){ //jika ketemu pertigaan -| yg menuju meja x
+    *num += 1;
+  }
+  if(*num == (*brainState).tujuan){
+    Serial.print("Pertigaan yang benar, belok kiri... ");
+    byte laju = _motor -> ambilSpeed();
+    _motor -> aturSpeed(laju*2/3);
+    while(digitalRead(lineLL) == 1) _motor -> maju(2);  //1: hitam
+    while(digitalRead(lineLL) == 0) _motor -> belokKiri(2);
+    while(digitalRead(lineLL) == 1 || digitalRead(lineR) == 0) _motor -> belokKiri(2);
+    _motor -> aturSpeed(laju);
+    
+    if((*brainState).backFlag == 0) *num = 254;  //terminasi saat menuju tujuan
+    else *num = 0;  //terminasi saat menuju base
+    Serial.println("Done");
+  }//sudah belok kiri
+}
+
+void Brain::turnRightLeft(){
+  if(digitalRead(lineRR) == 1){ //hitam
+    Serial.print("Belok kanan... ");
+    byte laju = _motor -> ambilSpeed();
+    _motor -> aturSpeed(laju*2/3);
+
+    while(digitalRead(lineRR) == 1) _motor -> maju(2);
+    while(digitalRead(lineL) == 0) _motor -> belokKanan(2);
+
+    _motor -> aturSpeed(laju);
+    Serial.println("Done");
+  }
+  else if(digitalRead(lineLL) == 1){
+    Serial.print("Belok kiri... ");
+    byte laju = _motor -> ambilSpeed();
+    _motor -> aturSpeed(laju*2/3);
+
+    while(digitalRead(lineLL) == 1) _motor -> maju(2);
+    while(digitalRead(lineLL) == 0) _motor -> belokKiri(2);
+    while(digitalRead(lineR) == 0) _motor -> belokKiri(2);
+
+    _motor -> aturSpeed(laju);
+    Serial.println("Done");
+  }
 }
 
 bool Brain::semuaS(char arr[]){
@@ -122,11 +205,13 @@ void Brain::cekSampai(structBrain *brainState){
       (*brainState).parkingFlag = 0; //terminasi
       digitalWrite(13, LOW);
     }
+
+    Serial.println("Cek sampai... True");
   }
 }
 
 void Brain::putarBalik(){
-  Serial.println("PUTAR BALIK");
+  Serial.print("Putar balik... ");
   byte laju = _motor -> ambilSpeed();
   _motor -> aturSpeed(laju*2/3);
   
@@ -136,6 +221,7 @@ void Brain::putarBalik(){
   while(digitalRead(lineL) != 1) _motor -> putarKanan(2);
   
   _motor -> aturSpeed(laju);
+  Serial.println("Done");
 }
 
 void Brain::structInfo(structBrain brainState){
