@@ -1,13 +1,13 @@
 /* 
  * Source File
- * Robot.cpp
+ * Motor.cpp
 */
 
-#include "Robot.h"
+#include "Motor.h"
 
 // Konstruktor
-// [class]::[fungsi](param)   lihat file.h
-Robot::Robot(byte pinENA, byte pinIN1, byte pinIN2,
+// [class]::[konstruktor](param)   lihat file.h
+Motor::Motor(byte pinENA, byte pinIN1, byte pinIN2,
              byte pinENB, byte pinIN3, byte pinIN4)
 {
   pinMode(pinENA, OUTPUT);
@@ -18,17 +18,17 @@ Robot::Robot(byte pinENA, byte pinIN1, byte pinIN2,
   pinMode(pinIN4, OUTPUT);
 
   // menyamakan variabel di file.h dan file.cpp
-  Robot::pinENA = pinENA;
-  Robot::pinIN1 = pinIN1;
-  Robot::pinIN2 = pinIN2;
-  Robot::pinENB = pinENB;
-  Robot::pinIN3 = pinIN3;
-  Robot::pinIN4 = pinIN4;
+  Motor::pinENA = pinENA;
+  Motor::pinIN1 = pinIN1;
+  Motor::pinIN2 = pinIN2;
+  Motor::pinENB = pinENB;
+  Motor::pinIN3 = pinIN3;
+  Motor::pinIN4 = pinIN4;
 
   laju = 50;     // default 50%
 }
 
-void Robot::maju(unsigned long lama){
+void Motor::maju(unsigned long lama){
   byte nilaiAnalog = laju / 100.0 * 255;
   analogWrite(pinENA, nilaiAnalog);
   analogWrite(pinENB, nilaiAnalog);
@@ -40,7 +40,7 @@ void Robot::maju(unsigned long lama){
   stop(0);
 }
 
-void Robot::mundur(unsigned long lama){
+void Motor::mundur(unsigned long lama){
   byte nilaiAnalog = laju / 100.0 * 255;
   analogWrite(pinENA, nilaiAnalog);
   analogWrite(pinENB, nilaiAnalog);
@@ -52,7 +52,7 @@ void Robot::mundur(unsigned long lama){
   stop(0);
 }
 
-void Robot::stop(unsigned long lama){
+void Motor::stop(unsigned long lama){
   analogWrite(pinENA, 0);
   analogWrite(pinENB, 0);
   digitalWrite(pinIN1, LOW);
@@ -62,7 +62,7 @@ void Robot::stop(unsigned long lama){
   delay(lama);
 }
 
-void Robot::belokKiri(unsigned long lama){
+void Motor::belokKiri(unsigned long lama){
   byte nilaiAnalog = laju / 100.0 * 255;
   analogWrite(pinENA, nilaiAnalog);
   analogWrite(pinENB, 0);
@@ -74,7 +74,7 @@ void Robot::belokKiri(unsigned long lama){
   stop(0);
 }
 
-void Robot::belokKanan(unsigned long lama){
+void Motor::belokKanan(unsigned long lama){
   byte nilaiAnalog = laju / 100.0 * 255;
   analogWrite(pinENA, 0);
   analogWrite(pinENB, nilaiAnalog);
@@ -86,7 +86,7 @@ void Robot::belokKanan(unsigned long lama){
   stop(0);
 }
 
-void Robot::putarKiri(unsigned long lama){
+void Motor::putarKiri(unsigned long lama){
   byte nilaiAnalog = laju / 100.0 * 255;
   analogWrite(pinENA, nilaiAnalog);
   analogWrite(pinENB, nilaiAnalog);
@@ -98,7 +98,7 @@ void Robot::putarKiri(unsigned long lama){
   stop(0);
 }
 
-void Robot::putarKanan(unsigned long lama){
+void Motor::putarKanan(unsigned long lama){
   byte nilaiAnalog = laju / 100.0 * 255;
   analogWrite(pinENA, nilaiAnalog);
   analogWrite(pinENB, nilaiAnalog);
@@ -110,13 +110,14 @@ void Robot::putarKanan(unsigned long lama){
   stop(0);
 }
 
-void Robot::aturSpeed(byte laju){
+void Motor::aturSpeed(byte laju){
   if(laju <= 100){  // maksimal speed 100%
-    // menyamakan variabel di file.h dan file.cpp
-    Robot::laju = laju;
+    //mengatur nilai laju dari kelas Robot = laju parameter
+    Motor::laju = laju;
   }
 }
 
-byte Robot::ambilSpeed(){
+byte Motor::ambilSpeed(){
+  //return nilai laju dari kelas Robot
   return laju;
 }

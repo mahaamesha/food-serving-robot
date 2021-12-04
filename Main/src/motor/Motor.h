@@ -1,16 +1,16 @@
 /* 
  * Header File
- * Robot.h
+ * Motor.h
 */
 
-#ifndef ROBOT_H
-#define ROBOT_H
+#ifndef MOTOR_H
+#define MOTOR_H
 
 #include "Arduino.h"
 
-class Robot{
+class Motor{
   public:
-    Robot(byte pinENA, byte pinIN1, byte pinIN2,
+    Motor(byte pinENA, byte pinIN1, byte pinIN2,
           byte pinENB, byte pinIN3, byte pinIN4);
     void maju(unsigned long lama);
     void mundur(unsigned long lama);

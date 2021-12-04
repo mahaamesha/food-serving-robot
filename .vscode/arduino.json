@@ -1,0 +1,7 @@
+{
+    "configuration": "cpu=16MHzatmega328",
+    "board": "arduino:avr:pro",
+    "port": "COM3",
+    "programmer": "arduino:avrispmkii",
+    "sketch": "Main\\Main.ino"
+}
