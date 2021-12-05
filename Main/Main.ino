@@ -15,7 +15,7 @@ void setup() {
   
   mylcd.displayInit();
   
-  motor.aturSpeed(30);  //default speed 50%
+  motor.aturSpeed(39);  //default speed 50%
 }
 //(END) SETUP
 
@@ -37,7 +37,7 @@ void loop() {
     if(brainState.tujuan != 0){
       brain.starterGo(&brainState); //while baseFlag=1
 
-      brain.keepForward(brainState.backFlag); //terobos obstacle pertigaan |-
+      brain.keepForward(&isTujuan, &brainState); //terobos obstacle pertigaan |-
 
       brain.isPertigaanKiri(&isTujuan, &brainState);  //belok kiri jika nomor meja benar
 
@@ -62,6 +62,7 @@ void loop() {
 
   /*STEP4 - putar balik, jalan ke base*/
   Serial.println("\n\n====== STEP 4 ======");
+  byte obstacle = 2;
   while(brainState.goFlag == 1){
     Serial.print("DI TUJUAN | ");
     brain.putarBalik();
@@ -72,9 +73,11 @@ void loop() {
       brain.isPertigaanKiri(&isTujuan, &brainState);
       //isTujuan=0, tujuan=255
       
-      brain.turnRightLeft();  //saat di obstacle jalur L kanan, dan T kiri di akhir
+      brain.keepForward(&isTujuan, &brainState);  //abaikan meja lain
 
-      brain.keepForward(brainState.backFlag);
+      brain.turnLeft();   //saat di obstacle jalur T kiri, di akhir
+      brain.turnRight();  //saat di obstacle jalur L kanan, di akhir
+      
 
       brain.ikutLine(&brainState);
 
