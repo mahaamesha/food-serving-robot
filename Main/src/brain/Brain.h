@@ -35,8 +35,8 @@ class Brain {
     void ikutLine(structBrain *brainState);
     void keepForward(byte *num, structBrain *brainState);
     void isPertigaanKiri(byte *num, structBrain *brainState);
-    void turnRight();
-    void turnLeft();
+    void turnRight(byte *num);
+    void turnLeft(byte *num);
     bool semuaS(char arr[]);
     void cekSampai(structBrain *brainState);
     void putarBalik();

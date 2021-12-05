@@ -62,22 +62,24 @@ void loop() {
 
   /*STEP4 - putar balik, jalan ke base*/
   Serial.println("\n\n====== STEP 4 ======");
-  byte obstacle = 2;
+  byte obstacle = 2;  //handle belok L kanan, T kiri saat menuju base
   while(brainState.goFlag == 1){
     Serial.print("DI TUJUAN | ");
     brain.putarBalik();
 
     mylcd.textKembali();
     while(brainState.backFlag == 1){
-      //saat isTujuan=tujuan=255, di pertigaan -|, masuk ke jalur utama
+      //saat isTujuan=tujuan=255, di pertigaan -|, masuk ke jalur utama, menuju base
       brain.isPertigaanKiri(&isTujuan, &brainState);
       //isTujuan=0, tujuan=255
       
-      brain.keepForward(&isTujuan, &brainState);  //abaikan meja lain
+      brain.keepForward(&isTujuan, &brainState);  //abaikan meja lain, kasus meja tujuan=1
 
-      brain.turnLeft();   //saat di obstacle jalur T kiri, di akhir
-      brain.turnRight();  //saat di obstacle jalur L kanan, di akhir
-      
+      //saat di obstacle jalur L kanan, di akhir. Hanya dicek lineRR saja
+      if(obstacle == 2) brain.turnRight(&obstacle);
+      //saat di obstacle jalur T kiri, di akhir. Hanya dicek lineLL saja
+      else if(obstacle == 1) brain.turnLeft(&obstacle);
+      //obstacle=0
 
       brain.ikutLine(&brainState);
 

@@ -155,7 +155,7 @@ void Brain::isPertigaanKiri(byte *num, structBrain *brainState){
         while(digitalRead(lineR) == 0) _motor -> putarKiri(2);
         *num = 254;  //terminasi saat menuju tujuan
       }
-      else { //handle belok kiri ke jalur utama
+      else { //handle belok kiri ke jalur utama, menuju base (STEP4)
         while(digitalRead(lineLL) == 0) _motor ->belokKiri(2);
         while(digitalRead(lineLL) == 1) _motor ->putarKiri(2);
         while(digitalRead(lineL) == 1) _motor ->putarKiri(2);
@@ -167,7 +167,7 @@ void Brain::isPertigaanKiri(byte *num, structBrain *brainState){
   }
 }
 
-void Brain::turnRight(){
+void Brain::turnRight(byte *num){
   //obstacle belokan L kanan saat menuju base
   if(digitalRead(lineRR) == 1){ //hitam
     Serial.print("Belok kanan... ");
@@ -178,16 +178,18 @@ void Brain::turnRight(){
       _motor -> maju(2);
       while(digitalRead(lineL) == 1) _motor -> putarKiri(2);
     }
-    _motor -> maju(10);
-    while(digitalRead(lineR) == 0) _motor -> belokKanan(2);
+    while(digitalRead(lineRR) == 0) _motor -> belokKanan(2);
+    while(digitalRead(lineRR) == 1) _motor -> belokKanan(2);
     while(digitalRead(lineR) == 1) _motor -> belokKanan(2);
 
     _motor -> aturSpeed(laju);
     Serial.println("Done");
+
+    *num -= 1;  //obstacle dilewati
   }
 }
 
-void Brain::turnLeft(){
+void Brain::turnLeft(byte *num){
   //obstacle belokan T kiri saat menuju base
   if(digitalRead(lineLL) == 1){
     Serial.print("Belok kiri... ");
@@ -195,13 +197,14 @@ void Brain::turnLeft(){
     _motor -> aturSpeed(laju*2/3);
 
     while(digitalRead(lineLL) == 1) _motor -> maju(2);
-    _motor -> maju(10);
     while(digitalRead(lineLL) == 0) _motor -> belokKiri(2);
     while(digitalRead(lineLL) == 1) _motor -> belokKiri(2);
-    while(digitalRead(lineL) == 1) _motor -> belokKiri(2);
+    while(digitalRead(lineL) == 1) _motor -> putarKiri(2);
 
     _motor -> aturSpeed(laju);
     Serial.println("Done");
+
+    *num = 0; //semua obstacle menuju base telah dilewati
   }
 }
 
