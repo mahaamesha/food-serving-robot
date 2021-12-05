@@ -118,6 +118,7 @@ void Brain::keepForward(byte *num, structBrain *brainState){
   }//sudah keluar dari obstacle pertigaan |- saat menuju tujuan
   
   //terobos pertigaan -| jika bukan meja tujuan
+  //tujuan=2, isTujuan=0 (saat baru sampai di pertigaan meja 1) while-->TRUE
   while(digitalRead(lineLL) == 1 && *num != (*brainState).tujuan-1){
     Serial.print("Lurus terus menuju meja selanjutnya... ");
     byte laju = _motor -> ambilSpeed();
@@ -128,9 +129,10 @@ void Brain::keepForward(byte *num, structBrain *brainState){
       while(digitalRead(lineR) == 1) _motor -> putarKanan(2);
     }
 
+    *num += 1;  //isTujuan=1, tujuan=2
     _motor -> aturSpeed(laju);
     Serial.println("Done");
-  }//sudah keluar dari obstacle pertigaan -| saat menuju base
+  }//sudah keluar dari obstacle pertigaan -| saat menuju meja tujuan
 }
 
 void Brain::isPertigaanKiri(byte *num, structBrain *brainState){
