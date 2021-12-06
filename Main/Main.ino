@@ -70,10 +70,10 @@ void loop() {
     mylcd.textKembali();
     while(brainState.backFlag == 1){
       //saat isTujuan=tujuan=255, di pertigaan -|, masuk ke jalur utama, menuju base
-      brain.isPertigaanKiri(&isTujuan, &brainState);
-      //isTujuan=0, tujuan=255
+      if(isTujuan == 254) brain.isPertigaanKiri(&isTujuan, &brainState);
+      //isTujuan=0, tujuan=255  hanya dipanggil sekali waktu masuk ke jalur utama
       
-      brain.keepForward(&isTujuan, &brainState);  //abaikan meja lain, kasus meja tujuan=1
+      if(obstacle == 2) brain.keepForward(&isTujuan, &brainState);  //abaikan meja lain, kasus meja tujuan=1
 
       //saat di obstacle jalur L kanan, di akhir. Hanya dicek lineRR saja
       if(obstacle == 2) brain.turnRight(&obstacle);
