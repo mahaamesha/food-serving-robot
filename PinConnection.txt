@@ -26,8 +26,10 @@ SUBMIT  12
 RESET   11
 NUMBER  10
 
+HCSR04
+TRIG    8
+ECHO    9
+
 OTHERS
-        8
-        9
         A6
         A7
