@@ -15,7 +15,8 @@ void setup() {
   
   mylcd.displayInit();
   
-  motor.aturSpeed(39);  //default speed 50%
+  // motor.aturSpeed(39);  //default speed 50%
+  motor.aturSpeed(70);  //default speed 50%
 }
 //(END) SETUP
 

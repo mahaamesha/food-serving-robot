@@ -57,13 +57,14 @@ void Brain::starterGo(structBrain *brainState){
 }
 
 void Brain::ikutLine(structBrain *brainState){ //setiap gerakan disimpan di char aksi
-  unsigned long lama = 12; //hold setiap aksi selama X ms
+  unsigned long lama = 14; //hold setiap aksi selama X ms | 17 agak kecepatan
   bool valLineL = digitalRead(lineL); // 0 -> putih
   bool valLineR = digitalRead(lineR); // 1 -> hitam
 
   Brain::tukarChar((*brainState).riwayatAksi);  //1,2,3,4 -> 4,1,2,3
   
   //ikuti garis
+  
   if (valLineL + valLineR == 0){
     if((*brainState).parkingFlag == 0){
       (*brainState).riwayatAksi[0] = 'F';
@@ -112,7 +113,7 @@ void Brain::keepForward(byte *num, structBrain *brainState){
 
     while(digitalRead(lineRR) == 1){
       _motor -> maju(1);
-      while(digitalRead(lineL) == 1) _motor -> putarKiri(1);
+      while(digitalRead(lineL) == 1) _motor -> belokKiri(1);
     }
 
     _motor -> aturSpeed(laju);
@@ -127,7 +128,7 @@ void Brain::keepForward(byte *num, structBrain *brainState){
     _motor -> aturSpeed(laju*2/3);
 
     while(digitalRead(lineLL) == 1) {
-      _motor -> maju(2);
+      _motor -> maju(1);
       while(digitalRead(lineR) == 1) _motor -> putarKanan(1);
     }
 
@@ -243,7 +244,7 @@ void Brain::putarBalik(){
   byte laju = _motor -> ambilSpeed();
   _motor -> aturSpeed(laju*2/3);
   
-  while(digitalRead(lineR) == 1) _motor -> maju(3); //1: hitam
+  while(digitalRead(lineR) == 1) _motor -> maju(1); //1: hitam
   while(digitalRead(lineRR) == 0) _motor -> putarKanan(1);
   while(digitalRead(lineRR) == 1) _motor -> putarKanan(1);
 

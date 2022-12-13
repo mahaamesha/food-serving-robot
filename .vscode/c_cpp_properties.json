@@ -3,7 +3,7 @@
     "configurations": [
         {
             "name": "Arduino",
-            "compilerPath": "C:\\Program Files (x86)\\Arduino\\hardware\\tools\\avr\\bin\\avr-g++",
+            "compilerPath": "C:\\Users\\LENOVO\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7\\bin\\avr-g++",
             "compilerArgs": [
                 "-std=gnu++11",
                 "-fpermissive",
@@ -15,17 +15,17 @@
             ],
             "intelliSenseMode": "gcc-x64",
             "includePath": [
-                "C:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\cores\\arduino",
-                "C:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\variants\\eightanaloginputs",
+                "C:\\Users\\LENOVO\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.4\\cores\\arduino",
+                "C:\\Users\\LENOVO\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.4\\variants\\eightanaloginputs",
                 "C:\\Users\\LENOVO\\Documents\\Arduino\\libraries\\LiquidCrystal_I2C-master",
-                "C:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\libraries\\Wire\\src",
+                "C:\\Users\\LENOVO\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.4\\libraries\\Wire\\src",
                 "C:\\Users\\LENOVO\\Documents\\Arduino\\libraries\\HCSR04-ultrasonic-sensor-lib-master\\src",
-                "c:\\program files (x86)\\arduino\\hardware\\tools\\avr\\lib\\gcc\\avr\\7.3.0\\include",
-                "c:\\program files (x86)\\arduino\\hardware\\tools\\avr\\lib\\gcc\\avr\\7.3.0\\include-fixed",
-                "c:\\program files (x86)\\arduino\\hardware\\tools\\avr\\avr\\include"
+                "c:\\users\\lenovo\\appdata\\local\\arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7\\lib\\gcc\\avr\\7.3.0\\include",
+                "c:\\users\\lenovo\\appdata\\local\\arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7\\lib\\gcc\\avr\\7.3.0\\include-fixed",
+                "c:\\users\\lenovo\\appdata\\local\\arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7\\avr\\include"
             ],
             "forcedInclude": [
-                "C:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\cores\\arduino\\Arduino.h"
+                "C:\\Users\\LENOVO\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.4\\cores\\arduino\\Arduino.h"
             ],
             "cStandard": "c11",
             "cppStandard": "c++11",

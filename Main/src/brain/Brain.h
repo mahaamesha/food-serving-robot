@@ -33,6 +33,7 @@ class Brain {
 
     void starterGo(structBrain *brainState);
     void ikutLine(structBrain *brainState);
+    void ikutLineVersiWhile(structBrain *brainState);
     void keepForward(byte *num, structBrain *brainState);
     void isPertigaanKiri(byte *num, structBrain *brainState);
     void turnRight(byte *num);
