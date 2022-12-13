@@ -1,4 +1,5 @@
 FOOD SERVING ROBOT
+@programmer mahaamesha
 
 Rule:
 - Robot standby di dapur
@@ -18,7 +19,7 @@ Rule:
 	Klik button lanjut
 	Ubah array yang menunjukkan tujuan robot
 - Setelah selesai mengantarkan semua,
-	Artinya, array tujuan robot [0,0,...]
+	Artinya, reset struct
 	Segera kembali ke posisi standby di dapur
 	
 
