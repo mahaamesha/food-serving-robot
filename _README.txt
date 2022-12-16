@@ -28,3 +28,4 @@ Alur Customer:
 - Menuju ke bagian pemesanan
 - Tunggu robot datang ke meja nomor X
 - Keluar resto
+
